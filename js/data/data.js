@@ -30,4 +30,12 @@ const URLS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export {MARKS, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS};
+const typeHousing = {
+  'flat': 'Квартира',
+  'bungalow': 'Бунгало',
+  'house': 'Дом',
+  'palace': 'Дворец',
+  'hotel': 'Отель',
+};
+
+export { MARKS, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing };

@@ -1,14 +1,6 @@
-const nums = [];
-
 const returnsArray = (num) => {
-  for (let i = 1; i <= num; i++) {
-    if (i < 10) {
-      nums.push(`0${i}`);
-    } else {
-      nums.push(i);
-    }
-  }
-  return nums;
+  const arrayGivenLength = new Array(num).fill(1).map((start, index) => start + index);
+  return arrayGivenLength.map((item) => `${item}`.padStart(2, '0'));
 };
 
 const getRandomInteger = (a = 0, b = 50) => {
@@ -32,4 +24,4 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-export {returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings}
+export {returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings};
