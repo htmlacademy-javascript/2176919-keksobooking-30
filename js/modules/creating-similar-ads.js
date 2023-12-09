@@ -1,4 +1,4 @@
-import { typeHousing } from "../data/data";
+import { typeHousing } from '../data/data';
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const container = document.querySelector('#map-canvas');
 
