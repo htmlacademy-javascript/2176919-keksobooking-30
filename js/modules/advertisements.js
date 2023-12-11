@@ -33,4 +33,4 @@ const returnAdvertisements = (quantity) => {
 };
 
 
-export {returnAdvertisements};
+export { returnAdvertisements };
