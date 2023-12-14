@@ -1,6 +1,8 @@
 
 const MARKS = 10;
 
+const FILE_TYPES = ['.jpg', '.jpeg', '.png', '.webp'];
+
 const TYPES_HOUSES = [
   'palace',
   'flat',
@@ -38,4 +40,19 @@ const typeHousing = {
   'hotel': 'Отель',
 };
 
-export { MARKS, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing };
+const minPriceHousing = {
+  'flat': 1000,
+  'bungalow': 0,
+  'house': 5000,
+  'palace': 10000,
+  'hotel': 3000,
+};
+
+const roomsOption = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0'],
+};
+
+export { MARKS, FILE_TYPES, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing, minPriceHousing, roomsOption };

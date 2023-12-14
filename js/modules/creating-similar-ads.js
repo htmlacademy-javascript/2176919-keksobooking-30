@@ -2,7 +2,7 @@ import { typeHousing } from '../data/data';
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const container = document.querySelector('#map-canvas');
 
-export const creatingSimilarAds = ({ offer, author }) => {
+const creatingSimilarAds = ({ offer, author }) => {
   const popupSimilarAds = cardTemplate.cloneNode(true);
   const popupTitle = popupSimilarAds.querySelector('.popup__title');
   const popupAddress = popupSimilarAds.querySelector('.popup__text--address');
@@ -43,3 +43,5 @@ export const creatingSimilarAds = ({ offer, author }) => {
 
   container.appendChild(popupSimilarAds);
 };
+
+export { creatingSimilarAds };
