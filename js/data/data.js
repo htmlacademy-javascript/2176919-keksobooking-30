@@ -40,6 +40,9 @@ const typeHousing = {
   'hotel': 'Отель',
 };
 
+const minLengthTitle = 30;
+const maxLengthTitle = 100;
+
 const minPriceHousing = {
   'flat': 1000,
   'bungalow': 0,
@@ -55,4 +58,11 @@ const roomsOption = {
   '100': ['0'],
 };
 
-export { MARKS, FILE_TYPES, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing, minPriceHousing, roomsOption };
+const sliderOptions = {
+  min: 0,
+  max: 100000,
+  start: 1000,
+  step: 1000,
+};
+
+export { MARKS, FILE_TYPES, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions };
