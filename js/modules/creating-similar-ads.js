@@ -1,6 +1,5 @@
 import { typeHousing } from '../data/data';
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const container = document.querySelector('#map-canvas');
 
 const creatingSimilarAds = ({ offer, author }) => {
   const popupSimilarAds = cardTemplate.cloneNode(true);
@@ -32,7 +31,7 @@ const creatingSimilarAds = ({ offer, author }) => {
       popupListItem.remove();
     }
   });
-  popupDescription.textContent = offer.description ? `${offer.description}` : '';
+  popupDescription.textContent = offer.description ? `${offer.description}` : popupDescription.remove();
   popupPhoto.remove();
   offer.photos?.forEach((photo) => {
     const offerPhoto = templatePhoto.cloneNode(true);
@@ -41,7 +40,7 @@ const creatingSimilarAds = ({ offer, author }) => {
   });
   popupAvatar.src = `${author.avatar}`;
 
-  container.appendChild(popupSimilarAds);
+  return popupSimilarAds;
 };
 
 export { creatingSimilarAds };
