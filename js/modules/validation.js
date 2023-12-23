@@ -90,11 +90,6 @@ adFormSlider.noUiSlider.on('update', () => {
   price.placeholder = price.value;
 });
 
-housingType.addEventListener('change', () => {
-  const selected = minPriceHousing[housingType.value];
-  adFormSlider.noUiSlider.set(selected);
-});
-
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();

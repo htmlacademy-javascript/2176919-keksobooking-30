@@ -3,29 +3,6 @@ const MARKS = 10;
 
 const FILE_TYPES = ['.jpg', '.jpeg', '.png', '.webp'];
 
-const TYPES_HOUSES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel',
-];
-
-const CONTROL_TIMESTAMPS = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-
-const FACILITIES = [
-  'wifi',
-  'dishwasher',
-  'parking',
-  'washer',
-  'elevator',
-  'conditioner',
-];
-
 const URLS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
@@ -61,8 +38,20 @@ const roomsOption = {
 const sliderOptions = {
   min: 0,
   max: 100000,
-  start: 1000,
+  start: 0,
   step: 1000,
 };
 
-export { MARKS, FILE_TYPES, TYPES_HOUSES, CONTROL_TIMESTAMPS, FACILITIES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions };
+const BASE_URL = 'https://30.javascript.pages.academy/keksobooking';
+
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
+export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Method, Route };

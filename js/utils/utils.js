@@ -1,3 +1,11 @@
+const request = async (url, options) => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+  return response.json();
+};
+
 const returnsArray = (num) => {
   const arrayGivenLength = new Array(num).fill(1).map((start, index) => start + index);
   return arrayGivenLength.map((item) => `${item}`.padStart(2, '0'));
@@ -24,4 +32,4 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-export {returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings};
+export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, request };

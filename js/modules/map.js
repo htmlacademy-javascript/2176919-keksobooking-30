@@ -1,15 +1,9 @@
 import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } from './form-activity-switch';
-import { returnAdvertisements } from './advertisements.js';
-import { MARKS } from '../data/data.js';
 import { creatingSimilarAds } from './creating-similar-ads.js';
-
-disablesAdForm();
-disablesMapForm();
 
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const address = document.querySelector('#address');
-const points = returnAdvertisements(MARKS);
 
 const ZOOM = 10;
 
@@ -40,8 +34,6 @@ const startCoordinate = {
 };
 
 const map = L.map('map-canvas').on('load', () => {
-  activatesAdForm();
-  activatesMapForm();
 }).setView(cityCenter, ZOOM);
 L.tileLayer(TILE_LAYER, {
   attribution: COPYRIGHT
@@ -73,17 +65,26 @@ marker.on('moveend', (evt) => {
   address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
 });
 
-points.forEach((point) => {
-  const { location: { lat, lng } } = point;
-  const markerSimilar = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
+const renderSimilarPoints = async (points) => {
+  await points.forEach((point) => {
+    const { location: { lat, lng } } = point;
+    const markerSimilar = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
 
-  markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
-});
+    markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
+  });
+};
+
+const setPoints = async (items) => {
+  const points = await structuredClone(items);
+  renderSimilarPoints(points);
+};
+
+export { setPoints };
