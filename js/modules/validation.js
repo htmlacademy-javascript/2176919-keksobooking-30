@@ -16,6 +16,7 @@ const checkInTime = time.querySelector('#timein');
 const checkOutTime = time.querySelector('#timeout');
 const photoOwner = adForm.querySelector('#avatar');
 const photosRealEstate = adForm.querySelector('#images');
+const submitButton = adForm.querySelector('.ad-form__submit');
 
 Pristine.addMessages('ru', {
   required: 'Обязательное поле',
@@ -73,7 +74,10 @@ pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изобра�
 photosRealEstate.addEventListener('change', validateRealEstatePhoto);
 pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не изображение');
 
-resetForm.addEventListener('click', () => pristine.reset());
+const resetValidity = () => pristine.reset();
+const resetSlider = () => adFormSlider.noUiSlider.reset();
+
+resetForm.addEventListener('click', () => resetValidity());
 
 noUiSlider.create(adFormSlider, {
   range: {
@@ -92,5 +96,23 @@ adFormSlider.noUiSlider.on('update', () => {
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    new FormData(adForm);
+  }
 });
+
+adForm.addEventListener('reset', () => {
+  resetValidity();
+  resetSlider();
+});
+
+const resetsForm = () => {
+  adForm.reset();
+};
+
+const togglesSubmitLock = (flag) => {
+  submitButton.disabled = flag;
+};
+
+export { togglesSubmitLock, resetsForm };

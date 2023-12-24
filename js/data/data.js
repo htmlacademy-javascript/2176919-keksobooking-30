@@ -49,9 +49,4 @@ const Route = {
   SEND_DATA: '/',
 };
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
-
-export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Method, Route };
+export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route };

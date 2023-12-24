@@ -32,4 +32,16 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, request };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const pressesKeydown = (handler) => {
+  const close = handler;
+  return function (evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      close();
+    }
+  };
+};
+
+export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, request, pressesKeydown };

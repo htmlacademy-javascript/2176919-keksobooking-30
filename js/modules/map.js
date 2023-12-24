@@ -1,4 +1,3 @@
-import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } from './form-activity-switch';
 import { creatingSimilarAds } from './creating-similar-ads.js';
 
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
