@@ -2,9 +2,9 @@ import Pristine from 'pristinejs';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions } from '../data/data.js';
+import { resetMarker } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
-const resetForm = adForm.querySelector('.ad-form__reset');
 const headline = adForm.querySelector('#title');
 const adFormSlider = adForm.querySelector('.ad-form__slider');
 const price = adForm.querySelector('#price');
@@ -77,8 +77,6 @@ pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не и
 const resetValidity = () => pristine.reset();
 const resetSlider = () => adFormSlider.noUiSlider.reset();
 
-resetForm.addEventListener('click', () => resetValidity());
-
 noUiSlider.create(adFormSlider, {
   range: {
     min: sliderOptions.min,
@@ -105,6 +103,7 @@ adForm.addEventListener('submit', (evt) => {
 adForm.addEventListener('reset', () => {
   resetValidity();
   resetSlider();
+  resetMarker();
 });
 
 const resetsForm = () => {

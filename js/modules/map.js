@@ -44,7 +44,7 @@ const mainPinIcon = L.icon({
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
 
-const marker = L.marker(startCoordinate, {
+let marker = L.marker(startCoordinate, {
   draggable: true,
   icon: mainPinIcon,
 });
@@ -55,14 +55,26 @@ const icon = L.icon({
   iconAnchor: [iconSimilarConfig.anchorX, iconSimilarConfig.anchorY],
 });
 
-marker.addTo(map);
+const initMapMarker = () => {
+  marker.addTo(map);
+  address.value = `${cityCenter.lat}, ${cityCenter.lng}`;
 
-address.value = `${cityCenter.lat}, ${cityCenter.lng}`;
+  marker.on('moveend', (evt) => {
+    const coordinate = evt.target.getLatLng();
+    address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
+  });
+};
 
-marker.on('moveend', (evt) => {
-  const coordinate = evt.target.getLatLng();
-  address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
-});
+initMapMarker();
+
+const resetMarker = () => {
+  marker.remove();
+  marker = L.marker(startCoordinate, {
+    draggable: true,
+    icon: mainPinIcon,
+  });
+  initMapMarker();
+};
 
 const renderSimilarPoints = async (points) => {
   await points.forEach((point) => {
@@ -86,4 +98,4 @@ const setPoints = async (items) => {
   renderSimilarPoints(points);
 };
 
-export { setPoints };
+export { setPoints, resetMarker };
