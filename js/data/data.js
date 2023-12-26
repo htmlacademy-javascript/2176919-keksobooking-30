@@ -42,11 +42,4 @@ const sliderOptions = {
   step: 1000,
 };
 
-const BASE_URL = 'https://30.javascript.pages.academy/keksobooking';
-
-const Route = {
-  GET_DATA: '/data',
-  SEND_DATA: '/',
-};
-
-export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route };
+export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions };

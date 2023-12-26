@@ -13,7 +13,7 @@ const hideMessage = () => {
 };
 
 const showMessage = (element) => {
-  document.body.append(document.querySelector(`#${element}`).content);
+  document.body.append(document.querySelector(`#${element}`).content.cloneNode(true));
   document.addEventListener('keydown', onMessageKeydown);
   document.addEventListener('click', (event) => {
     if (event.target.matches('.success', '.success__message') || event.target.matches('.error__button')) {

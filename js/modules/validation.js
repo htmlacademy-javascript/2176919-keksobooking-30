@@ -92,13 +92,15 @@ adFormSlider.noUiSlider.on('update', () => {
   price.placeholder = price.value;
 });
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    new FormData(adForm);
-  }
-});
+const setFormSubmit = () => {
+  adForm?.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      new FormData(adForm);
+    }
+  });
+};
 
 adForm.addEventListener('reset', () => {
   resetValidity();
@@ -114,4 +116,4 @@ const togglesSubmitLock = (flag) => {
   submitButton.disabled = flag;
 };
 
-export { togglesSubmitLock, resetsForm };
+export { togglesSubmitLock, resetsForm, setFormSubmit };
