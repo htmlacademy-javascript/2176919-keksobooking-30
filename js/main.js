@@ -1,9 +1,8 @@
 import { renderMap, initMapMarker, setPoints } from './modules/map.js';
 import { showsDataError, showMessage } from './modules/messages.js';
 import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } from './modules/form-activity-switch.js';
-import { togglesSubmitLock, resetsForm } from './modules/validation.js';
+import { togglesSubmitLock, resetsForm, setFormSubmit } from './modules/validation.js';
 import { MARKS } from './data/data.js';
-import { setFormSubmit } from './modules/validation.js';
 
 renderMap();
 initMapMarker();
