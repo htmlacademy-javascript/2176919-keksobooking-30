@@ -17,6 +17,7 @@ const checkOutTime = time.querySelector('#timeout');
 const photoOwner = adForm.querySelector('#avatar');
 const photosRealEstate = adForm.querySelector('#images');
 const submitButton = adForm.querySelector('.ad-form__submit');
+const address = document.querySelector('#address');
 
 Pristine.addMessages('ru', {
   required: 'Обязательное поле',
@@ -39,20 +40,32 @@ Pristine.setLocale('ru');
 const validateHeadline = (value) => value.length >= minLengthTitle && value.length <= maxLengthTitle;
 const validatePrice = (value) => !(value < minPriceHousing[housingType.value]);
 const validateGuestsNumber = () => roomsOption[roomNumberSelect.value].includes(guestsNumber.value);
-const validateTime = () => checkInTime.value === checkOutTime.value;
+
+const validateTime = () => {
+  checkInTime.addEventListener('change', () => {
+    checkOutTime.value = checkInTime.value;
+  });
+
+  checkOutTime.addEventListener('change', () => {
+    checkInTime.value = checkOutTime.value;
+  });
+};
+
 const validateOwnerPhoto = () => {
   if (photoOwner.files.length !== 0) {
     const file = photoOwner.files[0];
     const fileName = file.name.toLowerCase();
     return FILE_TYPES.some((it) => fileName.includes(it));
   }
+  return true;
 };
 const validateRealEstatePhoto = () => {
-  if (photosRealEstate.fileslength !== 0) {
+  if (photosRealEstate.files.length !== 0) {
     const file = photosRealEstate.files[0];
     const fileName = file?.name.toLowerCase();
     return FILE_TYPES.some((it) => fileName?.includes(it));
   }
+  return true;
 };
 
 const pristine = new Pristine(adForm, {
@@ -66,9 +79,7 @@ pristine.addValidator(headline, validateHeadline, `Длина комментар
 pristine.addValidator(price, validatePrice, 'Цена меньше минимальной.');
 pristine.addValidator(guestsNumber, validateGuestsNumber, 'Не верное количество гостей.');
 guestsNumber.addEventListener('change', validateGuestsNumber);
-time.addEventListener('change', validateTime);
-pristine.addValidator(checkInTime, validateTime, 'Не совпадает время въезда и выезда');
-pristine.addValidator(checkOutTime, validateTime, 'Не совпадает время въезда и выезда');
+time.addEventListener('input', validateTime);
 photoOwner.addEventListener('change', validateOwnerPhoto);
 pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изображение');
 photosRealEstate.addEventListener('change', validateRealEstatePhoto);
@@ -92,6 +103,8 @@ adFormSlider.noUiSlider.on('update', () => {
   price.placeholder = price.value;
 });
 
+/* price.addEventListener('change', () => adFormSlider.noUiSlider.set()); */
+
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -106,6 +119,7 @@ adForm.addEventListener('reset', () => {
   resetValidity();
   resetSlider();
   resetMarker();
+  console.log(address.value)
 });
 
 const resetsForm = () => {

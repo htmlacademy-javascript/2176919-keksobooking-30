@@ -49,7 +49,7 @@ document.addEventListener('formdata', (event) => {
   togglesSubmitLock(true);
   sendData(event.formData)
     .then(isSuccess)
-    .then(resetsForm())
+    .then(resetsForm)
     .catch(isError)
     .finally(togglesSubmitLock(false));
 });
