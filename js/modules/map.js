@@ -58,6 +58,7 @@ const icon = L.icon({
 const initMapMarker = () => {
   marker.addTo(map);
   address.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
+  address.setAttribute('value', `${startCoordinate.lat}, ${startCoordinate.lng}`);
   marker.on('moveend', (evt) => {
     const coordinate = evt.target.getLatLng();
     address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;

@@ -103,7 +103,7 @@ adFormSlider.noUiSlider.on('update', () => {
   price.placeholder = price.value;
 });
 
-/* price.addEventListener('change', () => adFormSlider.noUiSlider.set()); */
+price.addEventListener('input', () => adFormSlider.noUiSlider.set(price.value));
 
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
@@ -119,7 +119,6 @@ adForm.addEventListener('reset', () => {
   resetValidity();
   resetSlider();
   resetMarker();
-  console.log(address.value)
 });
 
 const resetsForm = () => {

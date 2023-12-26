@@ -39,7 +39,7 @@ const sliderOptions = {
   min: 0,
   max: 100000,
   start: 0,
-  step: 1000,
+  step: 1,
 };
 
 export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions };
