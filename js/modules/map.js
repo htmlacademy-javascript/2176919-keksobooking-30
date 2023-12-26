@@ -32,12 +32,6 @@ const startCoordinate = {
   lng: 139.64948,
 };
 
-const map = L.map('map-canvas').on('load', () => {
-}).setView(cityCenter, ZOOM);
-L.tileLayer(TILE_LAYER, {
-  attribution: COPYRIGHT
-}).addTo(map);
-
 const mainPinIcon = L.icon({
   iconUrl: iconConfig.url,
   iconSize: [iconConfig.width, iconConfig.height],
@@ -55,6 +49,16 @@ const icon = L.icon({
   iconAnchor: [iconSimilarConfig.anchorX, iconSimilarConfig.anchorY],
 });
 
+let map;
+
+const renderMap = () => {
+  map = L.map('map-canvas').on('load', () => {
+  }).setView(cityCenter, ZOOM);
+  L.tileLayer(TILE_LAYER, {
+    attribution: COPYRIGHT
+  }).addTo(map);
+};
+
 const initMapMarker = () => {
   marker.addTo(map);
   address.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
@@ -64,8 +68,6 @@ const initMapMarker = () => {
     address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
   });
 };
-
-initMapMarker();
 
 const resetMarker = () => {
   marker.remove();
@@ -98,4 +100,4 @@ const setPoints = async (items) => {
   renderSimilarPoints(points);
 };
 
-export { setPoints, resetMarker };
+export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker };
