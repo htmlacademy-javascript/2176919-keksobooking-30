@@ -24,16 +24,4 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
-const pressesKeydown = (handler) => {
-  const close = handler;
-  return function (evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      close();
-    }
-  };
-};
-
-export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, pressesKeydown };
+export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings };

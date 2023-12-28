@@ -1,4 +1,6 @@
-import { pressesKeydown } from '../utils/utils';
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 const showsDataError = () => {
   const dataError = () => document.body.insertAdjacentHTML('afterbegin', '<p class = "data-error"> получение похожих объвлений не удалось, но вы все еще можете отправить своё <p>');
   if (dataError) {
@@ -22,6 +24,11 @@ const showMessage = (element) => {
   });
 };
 
-const onMessageKeydown = pressesKeydown(hideMessage);
+function onMessageKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideMessage();
+  }
+}
 
 export { showsDataError, showMessage };

@@ -17,7 +17,6 @@ const checkOutTime = time.querySelector('#timeout');
 const photoOwner = adForm.querySelector('#avatar');
 const photosRealEstate = adForm.querySelector('#images');
 const submitButton = adForm.querySelector('.ad-form__submit');
-const address = document.querySelector('#address');
 
 Pristine.addMessages('ru', {
   required: 'Обязательное поле',
