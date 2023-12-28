@@ -1,15 +1,8 @@
-import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } from './form-activity-switch';
-import { returnAdvertisements } from './advertisements.js';
-import { MARKS } from '../data/data.js';
 import { creatingSimilarAds } from './creating-similar-ads.js';
-
-disablesAdForm();
-disablesMapForm();
 
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const address = document.querySelector('#address');
-const points = returnAdvertisements(MARKS);
 
 const ZOOM = 10;
 
@@ -39,21 +32,13 @@ const startCoordinate = {
   lng: 139.64948,
 };
 
-const map = L.map('map-canvas').on('load', () => {
-  activatesAdForm();
-  activatesMapForm();
-}).setView(cityCenter, ZOOM);
-L.tileLayer(TILE_LAYER, {
-  attribution: COPYRIGHT
-}).addTo(map);
-
 const mainPinIcon = L.icon({
   iconUrl: iconConfig.url,
   iconSize: [iconConfig.width, iconConfig.height],
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
 
-const marker = L.marker(startCoordinate, {
+let marker = L.marker(startCoordinate, {
   draggable: true,
   icon: mainPinIcon,
 });
@@ -64,26 +49,55 @@ const icon = L.icon({
   iconAnchor: [iconSimilarConfig.anchorX, iconSimilarConfig.anchorY],
 });
 
-marker.addTo(map);
+let map;
 
-address.value = `${cityCenter.lat}, ${cityCenter.lng}`;
+const renderMap = () => {
+  map = L.map('map-canvas').on('load', () => {
+  }).setView(cityCenter, ZOOM);
+  L.tileLayer(TILE_LAYER, {
+    attribution: COPYRIGHT
+  }).addTo(map);
+};
 
-marker.on('moveend', (evt) => {
-  const coordinate = evt.target.getLatLng();
-  address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
-});
+const initMapMarker = () => {
+  marker.addTo(map);
+  address.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
+  address.setAttribute('value', `${startCoordinate.lat}, ${startCoordinate.lng}`);
+  marker.on('moveend', (evt) => {
+    const coordinate = evt.target.getLatLng();
+    address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
+  });
+};
 
-points.forEach((point) => {
-  const { location: { lat, lng } } = point;
-  const markerSimilar = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
+const resetMarker = () => {
+  marker.remove();
+  marker = L.marker(startCoordinate, {
+    draggable: true,
+    icon: mainPinIcon,
+  });
+  initMapMarker();
+};
 
-  markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
-});
+const renderSimilarPoints = async (points) => {
+  await points.forEach((point) => {
+    const { location: { lat, lng } } = point;
+    const markerSimilar = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
+
+    markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
+  });
+};
+
+const setPoints = async (items) => {
+  const points = await structuredClone(items);
+  renderSimilarPoints(points);
+};
+
+export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker };

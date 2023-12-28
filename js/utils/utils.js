@@ -24,4 +24,4 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-export {returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings};
+export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings };

@@ -25,7 +25,7 @@ const creatingSimilarAds = ({ offer, author }) => {
   popupCapacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   popupTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   popupListFeatures.forEach((popupListItem) => {
-    const isFeatures = offer.features.some((feature) => popupListItem.classList.contains(`popup__feature--${feature}`),
+    const isFeatures = offer.features?.some((feature) => popupListItem.classList.contains(`popup__feature--${feature}`),
     );
     if (!isFeatures) {
       popupListItem.remove();

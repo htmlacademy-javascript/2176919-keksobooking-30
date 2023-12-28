@@ -2,9 +2,9 @@ import Pristine from 'pristinejs';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions } from '../data/data.js';
+import { resetMarker } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
-const resetForm = adForm.querySelector('.ad-form__reset');
 const headline = adForm.querySelector('#title');
 const adFormSlider = adForm.querySelector('.ad-form__slider');
 const price = adForm.querySelector('#price');
@@ -16,6 +16,7 @@ const checkInTime = time.querySelector('#timein');
 const checkOutTime = time.querySelector('#timeout');
 const photoOwner = adForm.querySelector('#avatar');
 const photosRealEstate = adForm.querySelector('#images');
+const submitButton = adForm.querySelector('.ad-form__submit');
 
 Pristine.addMessages('ru', {
   required: 'Обязательное поле',
@@ -38,20 +39,32 @@ Pristine.setLocale('ru');
 const validateHeadline = (value) => value.length >= minLengthTitle && value.length <= maxLengthTitle;
 const validatePrice = (value) => !(value < minPriceHousing[housingType.value]);
 const validateGuestsNumber = () => roomsOption[roomNumberSelect.value].includes(guestsNumber.value);
-const validateTime = () => checkInTime.value === checkOutTime.value;
+
+const validateTime = () => {
+  checkInTime.addEventListener('change', () => {
+    checkOutTime.value = checkInTime.value;
+  });
+
+  checkOutTime.addEventListener('change', () => {
+    checkInTime.value = checkOutTime.value;
+  });
+};
+
 const validateOwnerPhoto = () => {
   if (photoOwner.files.length !== 0) {
     const file = photoOwner.files[0];
     const fileName = file.name.toLowerCase();
     return FILE_TYPES.some((it) => fileName.includes(it));
   }
+  return true;
 };
 const validateRealEstatePhoto = () => {
-  if (photosRealEstate.fileslength !== 0) {
+  if (photosRealEstate.files.length !== 0) {
     const file = photosRealEstate.files[0];
     const fileName = file?.name.toLowerCase();
     return FILE_TYPES.some((it) => fileName?.includes(it));
   }
+  return true;
 };
 
 const pristine = new Pristine(adForm, {
@@ -65,15 +78,14 @@ pristine.addValidator(headline, validateHeadline, `Длина комментар
 pristine.addValidator(price, validatePrice, 'Цена меньше минимальной.');
 pristine.addValidator(guestsNumber, validateGuestsNumber, 'Не верное количество гостей.');
 guestsNumber.addEventListener('change', validateGuestsNumber);
-time.addEventListener('change', validateTime);
-pristine.addValidator(checkInTime, validateTime, 'Не совпадает время въезда и выезда');
-pristine.addValidator(checkOutTime, validateTime, 'Не совпадает время въезда и выезда');
+time.addEventListener('input', validateTime);
 photoOwner.addEventListener('change', validateOwnerPhoto);
 pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изображение');
 photosRealEstate.addEventListener('change', validateRealEstatePhoto);
 pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не изображение');
 
-resetForm.addEventListener('click', () => pristine.reset());
+const resetValidity = () => pristine.reset();
+const resetSlider = () => adFormSlider.noUiSlider.reset();
 
 noUiSlider.create(adFormSlider, {
   range: {
@@ -90,12 +102,30 @@ adFormSlider.noUiSlider.on('update', () => {
   price.placeholder = price.value;
 });
 
-housingType.addEventListener('change', () => {
-  const selected = minPriceHousing[housingType.value];
-  adFormSlider.noUiSlider.set(selected);
+price.addEventListener('input', () => adFormSlider.noUiSlider.set(price.value));
+
+const setFormSubmit = () => {
+  adForm?.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      new FormData(adForm);
+    }
+  });
+};
+
+adForm.addEventListener('reset', () => {
+  resetValidity();
+  resetSlider();
+  resetMarker();
 });
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+const resetsForm = () => {
+  adForm.reset();
+};
+
+const togglesSubmitLock = (flag) => {
+  submitButton.disabled = flag;
+};
+
+export { togglesSubmitLock, resetsForm, setFormSubmit };
