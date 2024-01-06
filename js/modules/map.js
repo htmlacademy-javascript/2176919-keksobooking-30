@@ -78,26 +78,36 @@ const resetMarker = () => {
   initMapMarker();
 };
 
-const renderSimilarPoints = async (points) => {
-  await points.forEach((point) => {
-    const { location: { lat, lng } } = point;
-    const markerSimilar = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon,
-      },
-    );
+let markerGroup;
 
-    markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
+const initMarkerGroup = () => {
+  markerGroup = L.layerGroup().addTo(map);
+};
+
+const createSimilarMarker = (point) => {
+  const { location: { lat, lng } } = point;
+  const markerSimilar = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon,
+    },
+  );
+  markerSimilar.addTo(markerGroup).bindPopup(creatingSimilarAds(point));
+};
+
+const renderSimilarPoints = (points) => {
+  points.forEach((point) => {
+    createSimilarMarker(point);
   });
 };
 
 const setPoints = async (items) => {
+  markerGroup.clearLayers();
   const points = await structuredClone(items);
   renderSimilarPoints(points);
 };
 
-export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker };
+export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker, initMarkerGroup };
