@@ -17,4 +17,4 @@ const sendData = (body) => load(Route.SEND_DATA, Method.POST, body);
 const isSuccess = () => showMessage('success');
 const isError = () => showMessage('error');
 
-export { getData, sendData, isError, isSuccess }
+export { getData, sendData, isError, isSuccess };

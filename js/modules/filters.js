@@ -1,5 +1,6 @@
 import { PriceFilterOptions, DEFAULT_OPTION, filterOptions, MARKS } from '../data/data';
 import { setPoints } from './map';
+import { debounce } from '../utils/utils';
 
 const mapFilters = document.querySelector('.map__filters');
 
@@ -83,11 +84,17 @@ const filters = (arr, options = {}) => {
   });
 };
 
+const renderPoints = (points) => {
+  setPoints(points.slice(0, MARKS));
+};
+
+const debouncedRenderPoints = debounce(renderPoints);
+
 const onChangeFilter = (evt) => {
   const selectedValue = evt.target.value;
   const options = createFilterOptions(filterOptions, filterType, selectedValue);
   filters(ads, options);
-  setPoints(copyAds.slice(0, MARKS));
+  debouncedRenderPoints(copyAds);
 };
 
 mapFilters.addEventListener('click', (evt) => {
