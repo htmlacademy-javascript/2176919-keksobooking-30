@@ -1,7 +1,7 @@
 import Pristine from 'pristinejs';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
-import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions } from '../data/data.js';
+import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, MAX_PRICE_HOUSING } from '../data/data.js';
 import { resetMarker } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -37,7 +37,9 @@ Pristine.addMessages('ru', {
 Pristine.setLocale('ru');
 
 const validateHeadline = (value) => value.length >= minLengthTitle && value.length <= maxLengthTitle;
-const validatePrice = (value) => !(value < minPriceHousing[housingType.value]);
+
+const validatePrice = (value) => !(value < minPriceHousing[housingType.value]) && value < MAX_PRICE_HOUSING;
+
 const validateGuestsNumber = () => roomsOption[roomNumberSelect.value].includes(guestsNumber.value);
 
 const validateTime = () => {
@@ -80,7 +82,18 @@ const pristine = new Pristine(adForm, defaultConfig);
 const pristineRooms = new Pristine(adForm, defaultConfig);
 
 pristine.addValidator(headline, validateHeadline, `Длина комментария должна быть больше ${minLengthTitle} и меньше ${maxLengthTitle} символов.`);
-pristine.addValidator(price, validatePrice, 'Цена меньше минимальной.');
+
+const getMessageValidatePrice = (value) => {
+  if (value < minPriceHousing[housingType.value]) {
+    return 'Цена меньше минимальной.';
+  }
+  if (value > MAX_PRICE_HOUSING) {
+    return 'Цена больше максимальной.';
+  }
+};
+
+pristine.addValidator(price, validatePrice, getMessageValidatePrice);
+
 pristineRooms.addValidator(guestsNumber, validateGuestsNumber, 'Неверное количество гостей.');
 pristineRooms.addValidator(roomNumberSelect, validateGuestsNumber, 'Неверное количество гостей.');
 document.addEventListener('change', () => {
@@ -111,12 +124,17 @@ noUiSlider.create(adFormSlider, {
   connect: 'lower',
 });
 
-adFormSlider.noUiSlider.on('update', () => {
+adFormSlider.noUiSlider.on('slide', () => {
   price.value = `${Number(adFormSlider.noUiSlider.get())}`;
   price.placeholder = price.value;
+  price.dispatchEvent(new Event('input'));
 });
 
-price.addEventListener('input', () => adFormSlider.noUiSlider.set(price.value));
+price.addEventListener('input', (event) => {
+  if (event.isTrusted) {
+    adFormSlider.noUiSlider.set(price.value);
+  }
+});
 
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {

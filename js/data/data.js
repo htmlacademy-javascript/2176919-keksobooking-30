@@ -1,6 +1,6 @@
 
 const MARKS = 10;
-
+const MAX_PRICE_HOUSING = 100000;
 const FILE_TYPES = ['.jpg', '.jpeg', '.png', '.webp'];
 
 const URLS = [
@@ -85,4 +85,4 @@ const filterOptions = [
   },
 ];
 
-export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route, Method, PriceFilterOptions, DEFAULT_OPTION, filterOptions };
+export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route, Method, PriceFilterOptions, DEFAULT_OPTION, filterOptions, MAX_PRICE_HOUSING };
