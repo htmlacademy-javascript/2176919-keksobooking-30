@@ -1,3 +1,5 @@
+const TIMEOUT = 500;
+
 const returnsArray = (num) => {
   const arrayGivenLength = new Array(num).fill(1).map((start, index) => start + index);
   return arrayGivenLength.map((item) => `${item}`.padStart(2, '0'));
@@ -24,4 +26,12 @@ const returnsRandomStrings = (items) => {
   return selectedAmenities;
 };
 
-export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings };
+const debounce = (callback, timeoutDelay = TIMEOUT) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, debounce };
