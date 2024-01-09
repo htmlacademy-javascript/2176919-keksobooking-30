@@ -2,8 +2,8 @@ import { creatingSimilarAds } from './creating-similar-ads.js';
 
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-const address = document.querySelector('#address');
 const ZOOM = 12;
+const address = document.querySelector('#address');
 
 const iconConfig = {
   url: './img/main-pin.svg',

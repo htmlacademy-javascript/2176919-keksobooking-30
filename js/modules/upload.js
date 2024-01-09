@@ -39,7 +39,7 @@ const resetsPhoto = () => {
   const photoHousing = document.querySelector('.photo-housing');
   if (avatarUploadPreview || photoHousing) {
     avatarUploadPreview.src = 'img/muffin-grey.svg';
-    photoHousing.remove();
+    photoHousing?.remove();
   }
 };
 
