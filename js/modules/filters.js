@@ -48,40 +48,27 @@ const findByFill = (arr, filter, value) => arr.filter((item) => {
 const findByFeatures = (arr, filter, value) => arr.filter((item) => value.every((elem) => item.offer[filter]?.includes(elem)));
 
 const filters = (arr, options = {}) => {
+  const filterFunctions = {
+    type: findByHousingType,
+    price: findByPrice,
+    rooms: findByFill,
+    guests: findByFill,
+    features: findByFeatures,
+  };
+
   let intermediateResult = [];
   copyAds = structuredClone(arr);
+
   options.forEach(({ filter, selectedValue }) => {
-    if (filter === 'type' && selectedValue !== DEFAULT_OPTION) {
-      const currentFilter = findByHousingType(copyAds, filter, selectedValue);
+    const filterFunction = filterFunctions[filter];
+    if (filterFunction && selectedValue !== DEFAULT_OPTION) {
+      const currentFilter = filterFunction(copyAds, filter, selectedValue);
       intermediateResult.push(...currentFilter);
-      copyAds = intermediateResult;
-      intermediateResult = [];
-    }
-    if (filter === 'price' && selectedValue !== DEFAULT_OPTION) {
-      const currentFilter = findByPrice(copyAds, filter, selectedValue);
-      intermediateResult.push(...currentFilter);
-      copyAds = intermediateResult;
-      intermediateResult = [];
-    }
-    if (filter === 'rooms' && selectedValue !== DEFAULT_OPTION) {
-      const currentFilter = findByFill(copyAds, filter, selectedValue);
-      intermediateResult.push(...currentFilter);
-      copyAds = intermediateResult;
-      intermediateResult = [];
-    }
-    if (filter === 'guests' && selectedValue !== DEFAULT_OPTION) {
-      const currentFilter = findByFill(copyAds, filter, selectedValue);
-      intermediateResult.push(...currentFilter);
-      copyAds = intermediateResult;
-      intermediateResult = [];
-    }
-    if (filter === 'features' && selectedValue.length > 0) {
-      const currentFilter = findByFeatures(copyAds, filter, selectedValue);
-      intermediateResult.push(...currentFilter);
-      copyAds = intermediateResult;
+      copyAds = structuredClone(intermediateResult);
       intermediateResult = [];
     }
   });
+  return copyAds;
 };
 
 const renderPoints = (points) => {
