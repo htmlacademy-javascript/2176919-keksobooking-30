@@ -2,7 +2,7 @@ import Pristine from 'pristinejs';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, MAX_PRICE_HOUSING } from '../data/data.js';
-import { resetMarker } from './map.js';
+import { resetMarker, closesPopup } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const headline = adForm.querySelector('#title');
@@ -79,8 +79,6 @@ const defaultConfig = {
 
 const pristine = new Pristine(adForm, defaultConfig);
 
-const pristineRooms = new Pristine(adForm, defaultConfig);
-
 pristine.addValidator(headline, validateHeadline, `Длина комментария должна быть больше ${minLengthTitle} и меньше ${maxLengthTitle} символов.`);
 
 const getMessageValidatePrice = (value) => {
@@ -94,11 +92,11 @@ const getMessageValidatePrice = (value) => {
 
 pristine.addValidator(price, validatePrice, getMessageValidatePrice);
 
-pristineRooms.addValidator(guestsNumber, validateGuestsNumber, 'Неверное количество гостей.');
-pristineRooms.addValidator(roomNumberSelect, validateGuestsNumber, 'Неверное количество гостей.');
+pristine.addValidator(guestsNumber, validateGuestsNumber, 'Неверное количество гостей.');
+pristine.addValidator(roomNumberSelect, validateGuestsNumber, 'Неверное количество гостей.');
 document.addEventListener('change', () => {
   if (validateGuestsNumber()) {
-    pristineRooms.reset();
+    pristine.validate();
   }
 });
 
@@ -110,8 +108,8 @@ pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не и
 
 const resetValidity = () => {
   pristine.reset();
-  pristineRooms.reset();
 };
+
 const resetSlider = () => adFormSlider.noUiSlider.reset();
 
 noUiSlider.create(adFormSlider, {
@@ -139,7 +137,7 @@ price.addEventListener('input', (event) => {
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    const isValid = pristine.validate() && pristineRooms.validate();
+    const isValid = pristine.validate();
     if (isValid) {
       new FormData(adForm);
     }
@@ -150,10 +148,12 @@ adForm.addEventListener('reset', () => {
   resetValidity();
   resetSlider();
   resetMarker();
+  closesPopup();
 });
 
 const resetsForm = () => {
   adForm.reset();
+  closesPopup();
 };
 
 const togglesSubmitLock = (flag) => {

@@ -3,8 +3,7 @@ import { creatingSimilarAds } from './creating-similar-ads.js';
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const address = document.querySelector('#address');
-
-const ZOOM = 10;
+const ZOOM = 12;
 
 const iconConfig = {
   url: './img/main-pin.svg',
@@ -23,13 +22,13 @@ const iconSimilarConfig = {
 };
 
 const cityCenter = {
-  lat: 35.68509,
-  lng: 139.64948,
+  lat: 35.68226,
+  lng: 139.75459,
 };
 
 const startCoordinate = {
-  lat: 35.68509,
-  lng: 139.64948,
+  lat: 35.68226,
+  lng: 139.75459,
 };
 
 const mainPinIcon = L.icon({
@@ -110,4 +109,6 @@ const setPoints = async (items) => {
   renderSimilarPoints(points);
 };
 
-export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker, initMarkerGroup };
+const closesPopup = () => document.querySelector('.leaflet-popup-close-button').dispatchEvent(new Event('click', { bubbles: true }));
+
+export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker, initMarkerGroup, closesPopup };
