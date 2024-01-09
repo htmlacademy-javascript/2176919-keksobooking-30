@@ -28,10 +28,19 @@ const initializesPhotoLoading = () => {
         newImg.alt = 'Вот здесь вы можете побывать.';
         newImg.width = '70';
         newImg.height = '70';
+        newImg.classList.add('photo-housing');
         photographyHousingContainer.insertAdjacentElement('afterBegin', newImg);
       }
     }
   });
 };
 
-export { initializesPhotoLoading };
+const resetsPhoto = () => {
+  const photoHousing = document.querySelector('.photo-housing');
+  if (avatarUploadPreview || photoHousing) {
+    avatarUploadPreview.src = 'img/muffin-grey.svg';
+    photoHousing.remove();
+  }
+};
+
+export { initializesPhotoLoading, resetsPhoto };

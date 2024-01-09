@@ -109,6 +109,6 @@ const setPoints = async (items) => {
   renderSimilarPoints(points);
 };
 
-const closesPopup = () => document.querySelector('.leaflet-popup-close-button').dispatchEvent(new Event('click', { bubbles: true }));
+const closesPopup = () => document.querySelector('.leaflet-popup-close-button')?.dispatchEvent(new Event('click', { bubbles: true }));
 
 export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker, initMarkerGroup, closesPopup };

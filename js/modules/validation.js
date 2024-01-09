@@ -3,6 +3,7 @@ import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, MAX_PRICE_HOUSING } from '../data/data.js';
 import { resetMarker, closesPopup } from './map.js';
+import { resetsPhoto } from './upload.js';
 
 const adForm = document.querySelector('.ad-form');
 const headline = adForm.querySelector('#title');
@@ -149,11 +150,13 @@ adForm.addEventListener('reset', () => {
   resetSlider();
   resetMarker();
   closesPopup();
+  resetsPhoto();
 });
 
 const resetsForm = () => {
-  adForm.reset();
   closesPopup();
+  resetsPhoto();
+  adForm.reset();
 };
 
 const togglesSubmitLock = (flag) => {
