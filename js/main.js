@@ -5,7 +5,7 @@ import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } fr
 import { togglesSubmitLock, resetsForm, setFormSubmit } from './modules/validation.js';
 import { getData, sendData, isError, isSuccess } from './modules/api.js';
 import { getDataFilter } from './modules/filters.js';
-import './modules/upload.js';
+import { initializesPhotoLoading } from './modules/upload.js';
 
 renderMap();
 initMapMarker();
@@ -31,3 +31,5 @@ document.addEventListener('formdata', (event) => {
     .catch(isError)
     .finally(togglesSubmitLock(false));
 });
+
+initializesPhotoLoading();

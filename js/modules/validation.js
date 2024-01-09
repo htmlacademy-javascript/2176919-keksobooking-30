@@ -58,6 +58,7 @@ const validateOwnerPhoto = () => {
   }
   return true;
 };
+
 const validateRealEstatePhoto = () => {
   if (photosRealEstate.files.length !== 0) {
     const file = photosRealEstate.files[0];
@@ -67,24 +68,37 @@ const validateRealEstatePhoto = () => {
   return true;
 };
 
-const pristine = new Pristine(adForm, {
+const defaultConfig = {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
-});
+};
+
+const pristine = new Pristine(adForm, defaultConfig);
+
+const pristineRooms = new Pristine(adForm, defaultConfig);
 
 pristine.addValidator(headline, validateHeadline, `Длина комментария должна быть больше ${minLengthTitle} и меньше ${maxLengthTitle} символов.`);
 pristine.addValidator(price, validatePrice, 'Цена меньше минимальной.');
-pristine.addValidator(guestsNumber, validateGuestsNumber, 'Не верное количество гостей.');
-guestsNumber.addEventListener('change', validateGuestsNumber);
+pristineRooms.addValidator(guestsNumber, validateGuestsNumber, 'Неверное количество гостей.');
+pristineRooms.addValidator(roomNumberSelect, validateGuestsNumber, 'Неверное количество гостей.');
+document.addEventListener('change', () => {
+  if (validateGuestsNumber()) {
+    pristineRooms.reset();
+  }
+});
+
 time.addEventListener('input', validateTime);
 photoOwner.addEventListener('change', validateOwnerPhoto);
 pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изображение');
 photosRealEstate.addEventListener('change', validateRealEstatePhoto);
 pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не изображение');
 
-const resetValidity = () => pristine.reset();
+const resetValidity = () => {
+  pristine.reset();
+  pristineRooms.reset();
+};
 const resetSlider = () => adFormSlider.noUiSlider.reset();
 
 noUiSlider.create(adFormSlider, {
@@ -107,7 +121,7 @@ price.addEventListener('input', () => adFormSlider.noUiSlider.set(price.value));
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    const isValid = pristine.validate();
+    const isValid = pristine.validate() && pristineRooms.validate();
     if (isValid) {
       new FormData(adForm);
     }
