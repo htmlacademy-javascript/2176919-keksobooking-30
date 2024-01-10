@@ -2,9 +2,8 @@ import { creatingSimilarAds } from './creating-similar-ads.js';
 
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const ZOOM = 12;
 const address = document.querySelector('#address');
-
-const ZOOM = 10;
 
 const iconConfig = {
   url: './img/main-pin.svg',
@@ -23,13 +22,13 @@ const iconSimilarConfig = {
 };
 
 const cityCenter = {
-  lat: 35.68509,
-  lng: 139.64948,
+  lat: 35.68226,
+  lng: 139.75459,
 };
 
 const startCoordinate = {
-  lat: 35.68509,
-  lng: 139.64948,
+  lat: 35.68226,
+  lng: 139.75459,
 };
 
 const mainPinIcon = L.icon({
@@ -78,26 +77,38 @@ const resetMarker = () => {
   initMapMarker();
 };
 
-const renderSimilarPoints = async (points) => {
-  await points.forEach((point) => {
-    const { location: { lat, lng } } = point;
-    const markerSimilar = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon,
-      },
-    );
+let markerGroup;
 
-    markerSimilar.addTo(map).bindPopup(creatingSimilarAds(point));
+const initMarkerGroup = () => {
+  markerGroup = L.layerGroup().addTo(map);
+};
+
+const createSimilarMarker = (point) => {
+  const { location: { lat, lng } } = point;
+  const markerSimilar = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon,
+    },
+  );
+  markerSimilar.addTo(markerGroup).bindPopup(creatingSimilarAds(point));
+};
+
+const renderSimilarPoints = (points) => {
+  points.forEach((point) => {
+    createSimilarMarker(point);
   });
 };
 
 const setPoints = async (items) => {
+  markerGroup.clearLayers();
   const points = await structuredClone(items);
   renderSimilarPoints(points);
 };
 
-export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker };
+const closesPopup = () => document.querySelector('.leaflet-popup-close-button')?.dispatchEvent(new Event('click', { bubbles: true }));
+
+export { setPoints, resetMarker, renderSimilarPoints, renderMap, initMapMarker, initMarkerGroup, closesPopup };

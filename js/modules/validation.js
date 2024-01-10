@@ -1,8 +1,9 @@
 import Pristine from 'pristinejs';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
-import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions } from '../data/data.js';
-import { resetMarker } from './map.js';
+import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, MAX_PRICE_HOUSING } from '../data/data.js';
+import { resetMarker, closesPopup } from './map.js';
+import { resetsPhoto } from './upload.js';
 
 const adForm = document.querySelector('.ad-form');
 const headline = adForm.querySelector('#title');
@@ -37,7 +38,9 @@ Pristine.addMessages('ru', {
 Pristine.setLocale('ru');
 
 const validateHeadline = (value) => value.length >= minLengthTitle && value.length <= maxLengthTitle;
-const validatePrice = (value) => !(value < minPriceHousing[housingType.value]);
+
+const validatePrice = (value) => !(value < minPriceHousing[housingType.value]) && value < MAX_PRICE_HOUSING;
+
 const validateGuestsNumber = () => roomsOption[roomNumberSelect.value].includes(guestsNumber.value);
 
 const validateTime = () => {
@@ -58,6 +61,7 @@ const validateOwnerPhoto = () => {
   }
   return true;
 };
+
 const validateRealEstatePhoto = () => {
   if (photosRealEstate.files.length !== 0) {
     const file = photosRealEstate.files[0];
@@ -67,24 +71,46 @@ const validateRealEstatePhoto = () => {
   return true;
 };
 
-const pristine = new Pristine(adForm, {
+const defaultConfig = {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
-});
+};
+
+const pristine = new Pristine(adForm, defaultConfig);
 
 pristine.addValidator(headline, validateHeadline, `Длина комментария должна быть больше ${minLengthTitle} и меньше ${maxLengthTitle} символов.`);
-pristine.addValidator(price, validatePrice, 'Цена меньше минимальной.');
-pristine.addValidator(guestsNumber, validateGuestsNumber, 'Не верное количество гостей.');
-guestsNumber.addEventListener('change', validateGuestsNumber);
+
+const getMessageValidatePrice = (value) => {
+  if (value < minPriceHousing[housingType.value]) {
+    return 'Цена меньше минимальной.';
+  }
+  if (value > MAX_PRICE_HOUSING) {
+    return 'Цена больше максимальной.';
+  }
+};
+
+pristine.addValidator(price, validatePrice, getMessageValidatePrice);
+
+pristine.addValidator(guestsNumber, validateGuestsNumber, 'Неверное количество гостей.');
+pristine.addValidator(roomNumberSelect, validateGuestsNumber, 'Неверное количество гостей.');
+document.addEventListener('change', () => {
+  if (validateGuestsNumber()) {
+    pristine.validate();
+  }
+});
+
 time.addEventListener('input', validateTime);
 photoOwner.addEventListener('change', validateOwnerPhoto);
 pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изображение');
 photosRealEstate.addEventListener('change', validateRealEstatePhoto);
 pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не изображение');
 
-const resetValidity = () => pristine.reset();
+const resetValidity = () => {
+  pristine.reset();
+};
+
 const resetSlider = () => adFormSlider.noUiSlider.reset();
 
 noUiSlider.create(adFormSlider, {
@@ -97,12 +123,17 @@ noUiSlider.create(adFormSlider, {
   connect: 'lower',
 });
 
-adFormSlider.noUiSlider.on('update', () => {
+adFormSlider.noUiSlider.on('slide', () => {
   price.value = `${Number(adFormSlider.noUiSlider.get())}`;
   price.placeholder = price.value;
+  price.dispatchEvent(new Event('input'));
 });
 
-price.addEventListener('input', () => adFormSlider.noUiSlider.set(price.value));
+price.addEventListener('input', (event) => {
+  if (event.isTrusted) {
+    adFormSlider.noUiSlider.set(price.value);
+  }
+});
 
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
@@ -118,9 +149,13 @@ adForm.addEventListener('reset', () => {
   resetValidity();
   resetSlider();
   resetMarker();
+  closesPopup();
+  resetsPhoto();
 });
 
 const resetsForm = () => {
+  closesPopup();
+  resetsPhoto();
   adForm.reset();
 };
 

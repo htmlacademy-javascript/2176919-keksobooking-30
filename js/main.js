@@ -1,44 +1,23 @@
-import { renderMap, initMapMarker, setPoints } from './modules/map.js';
-import { showsDataError, showMessage } from './modules/messages.js';
+import { renderMap, initMapMarker, setPoints, initMarkerGroup } from './modules/map.js';
+import { MARKS } from './data/data.js';
+import { showsDataError } from './modules/messages.js';
 import { disablesAdForm, disablesMapForm, activatesAdForm, activatesMapForm } from './modules/form-activity-switch.js';
 import { togglesSubmitLock, resetsForm, setFormSubmit } from './modules/validation.js';
-import { MARKS } from './data/data.js';
+import { getData, sendData, isError, isSuccess } from './modules/api.js';
+import { getDataFilter } from './modules/filters.js';
+import { initializesPhotoLoading } from './modules/upload.js';
 
 renderMap();
 initMapMarker();
-
-const BASE_URL = 'https://30.javascript.pages.academy/keksobooking';
-
-const Route = {
-  GET_DATA: '/data',
-  SEND_DATA: '/',
-};
-
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
-
-const load = (route, method = Method.GET, body = null) =>
-  fetch(`${BASE_URL}${route}`, { method, body })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error();
-      }
-      return response.json();
-    });
-
+initMarkerGroup();
 disablesAdForm();
 disablesMapForm();
 
-const getData = () => (load(Route.GET_DATA));
-const sendData = (body) => load(Route.SEND_DATA, Method.POST, body);
-
-const isSuccess = () => showMessage('success');
-const isError = () => showMessage('error');
-
 getData()
-  .then((data) => setPoints(data.slice(0, MARKS)))
+  .then((data) => {
+    getDataFilter(data);
+    setPoints(data.slice(0, MARKS));
+  })
   .then(activatesMapForm)
   .catch(showsDataError)
   .finally(activatesAdForm);
@@ -52,3 +31,5 @@ document.addEventListener('formdata', (event) => {
     .catch(isError)
     .finally(togglesSubmitLock(false));
 });
+
+initializesPhotoLoading();
