@@ -1,4 +1,5 @@
-import { typeHousing } from '../data/data';
+import { typeHousing } from '../data/data.js';
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const creatingSimilarAds = ({ offer, author }) => {

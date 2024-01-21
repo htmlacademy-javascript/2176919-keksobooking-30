@@ -101,10 +101,10 @@ document.addEventListener('change', () => {
   }
 });
 
-time.addEventListener('input', validateTime);
-photoOwner.addEventListener('change', validateOwnerPhoto);
+time.addEventListener('input', () => validateTime());
+photoOwner.addEventListener('change', () => validateOwnerPhoto());
 pristine.addValidator(photoOwner, validateOwnerPhoto, 'Это не изображение');
-photosRealEstate.addEventListener('change', validateRealEstatePhoto);
+photosRealEstate.addEventListener('change', () => validateRealEstatePhoto());
 pristine.addValidator(photosRealEstate, validateRealEstatePhoto, 'Это не изображение');
 
 const resetValidity = () => {
@@ -134,6 +134,12 @@ price.addEventListener('input', (event) => {
     adFormSlider.noUiSlider.set(price.value);
   }
 });
+
+const onHousingTypeChange = (evt) => {
+  price.placeholder = minPriceHousing[evt.target.value];
+};
+
+housingType.addEventListener('change', onHousingTypeChange);
 
 const setFormSubmit = () => {
   adForm?.addEventListener('submit', (evt) => {
