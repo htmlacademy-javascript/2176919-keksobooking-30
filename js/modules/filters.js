@@ -1,6 +1,6 @@
-import { PriceFilterOptions, DEFAULT_OPTION, filterOptions, MARKS } from '../data/data';
-import { setPoints } from './map';
-import { debounce } from '../utils/utils';
+import { PriceFilterOptions, DEFAULT_OPTION, filterOptions, MARKS } from '../data/data.js';
+import { setPoints } from './map.js';
+import { debounce } from '../utils/utils.js';
 
 const mapFilters = document.querySelector('.map__filters');
 
@@ -33,11 +33,10 @@ const findByHousingType = (arr, filter, value) => arr.filter((item) => {
   }
 });
 
-const findByPrice = (arr, filter, value) => arr.filter((item) => {
-  if (item.offer[filter] > PriceFilterOptions[value.toUpperCase()][0] && item.offer[filter] < PriceFilterOptions[value.toUpperCase()][1]) {
-    return item;
-  }
-});
+const findByPrice = (arr, filter, value) => arr.filter(({ offer }) =>
+  offer[filter] > PriceFilterOptions[value.toUpperCase()][0] &&
+  offer[filter] < PriceFilterOptions[value.toUpperCase()][1]
+);
 
 const findByFill = (arr, filter, value) => arr.filter((item) => {
   if (item.offer[filter] === +value) {

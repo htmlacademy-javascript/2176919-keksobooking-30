@@ -1,4 +1,5 @@
 const FILE_TYPES = ['.jpg', '.jpeg', '.png', '.webp'];
+const SIZE_IMAGE = '70';
 const avatarUploadInput = document.querySelector('.ad-form-header__input');
 const avatarUploadPreview = document.querySelector('.ad-form-header__preview img');
 const photographyHousingUploadInput = document.querySelector('.ad-form__input');
@@ -26,8 +27,8 @@ const initializesPhotoLoading = () => {
       if (checksType && newImg) {
         newImg.src = URL.createObjectURL(file);
         newImg.alt = 'Вот здесь вы можете побывать.';
-        newImg.width = '70';
-        newImg.height = '70';
+        newImg.width = SIZE_IMAGE;
+        newImg.height = SIZE_IMAGE;
         newImg.classList.add('photo-housing');
         photographyHousingContainer.insertAdjacentElement('afterBegin', newImg);
       }

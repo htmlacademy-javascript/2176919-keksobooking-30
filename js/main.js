@@ -23,13 +23,15 @@ getData()
   .finally(activatesAdForm);
 setFormSubmit();
 
-document.addEventListener('formdata', (event) => {
+const onDocumentFormdata = (event) => {
   togglesSubmitLock(true);
   sendData(event.formData)
     .then(isSuccess)
     .then(resetsForm)
     .catch(isError)
     .finally(togglesSubmitLock(false));
-});
+};
+
+document.addEventListener('formdata', onDocumentFormdata);
 
 initializesPhotoLoading();
