@@ -89,4 +89,9 @@ mapFilters.addEventListener('click', (evt) => {
   select.addEventListener('change', onChangeFilter);
 });
 
-export { getDataFilter, copyAds };
+const resetFilters = () => {
+  mapFilters.reset();
+  debouncedRenderPoints(ads);
+};
+
+export { getDataFilter, copyAds, resetFilters };

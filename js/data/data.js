@@ -3,12 +3,6 @@ const MARKS = 10;
 const MAX_PRICE_HOUSING = 100000;
 const FILE_TYPES = ['.jpg', '.jpeg', '.png', '.webp'];
 
-const URLS = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-];
-
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -85,4 +79,4 @@ const filterOptions = [
   },
 ];
 
-export { MARKS, FILE_TYPES, URLS, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route, Method, PriceFilterOptions, DEFAULT_OPTION, filterOptions, MAX_PRICE_HOUSING };
+export { MARKS, FILE_TYPES, typeHousing, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, BASE_URL, Route, Method, PriceFilterOptions, DEFAULT_OPTION, filterOptions, MAX_PRICE_HOUSING };
