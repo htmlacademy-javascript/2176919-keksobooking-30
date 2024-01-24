@@ -4,6 +4,7 @@ import 'nouislider/dist/nouislider.css';
 import { FILE_TYPES, minLengthTitle, maxLengthTitle, minPriceHousing, roomsOption, sliderOptions, MAX_PRICE_HOUSING } from '../data/data.js';
 import { resetMarker, closesPopup } from './map.js';
 import { resetsPhoto } from './upload.js';
+import { resetFilters } from './filters.js';
 
 const adForm = document.querySelector('.ad-form');
 const headline = adForm.querySelector('#title');
@@ -111,7 +112,10 @@ const resetValidity = () => {
   pristine.reset();
 };
 
-const resetSlider = () => adFormSlider.noUiSlider.reset();
+const resetSlider = () => {
+  price.placeholder = '0';
+  adFormSlider.noUiSlider.reset();
+};
 
 noUiSlider.create(adFormSlider, {
   range: {
@@ -157,12 +161,14 @@ adForm.addEventListener('reset', () => {
   resetMarker();
   closesPopup();
   resetsPhoto();
+  resetFilters();
 });
 
 const resetsForm = () => {
   closesPopup();
   resetsPhoto();
   adForm.reset();
+  resetFilters();
 };
 
 const togglesSubmitLock = (flag) => {

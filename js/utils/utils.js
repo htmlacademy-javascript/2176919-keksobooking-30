@@ -1,10 +1,5 @@
 const TIMEOUT = 500;
 
-const returnsArray = (num) => {
-  const arrayGivenLength = new Array(num).fill(1).map((start, index) => start + index);
-  return arrayGivenLength.map((item) => `${item}`.padStart(2, '0'));
-};
-
 const getRandomInteger = (a = 0, b = 50) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -14,18 +9,6 @@ const getRandomInteger = (a = 0, b = 50) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const returnsRandomStrings = (items) => {
-  const selectedAmenities = [];
-  const counter = getRandomInteger(1, items.length);
-  while (selectedAmenities.length < counter) {
-    const convenience = getRandomArrayElement(items);
-    if (!selectedAmenities.includes(convenience)) {
-      selectedAmenities.push(convenience);
-    }
-  }
-  return selectedAmenities;
-};
-
 const debounce = (callback, timeoutDelay = TIMEOUT) => {
   let timeoutId;
   return (...rest) => {
@@ -34,4 +17,4 @@ const debounce = (callback, timeoutDelay = TIMEOUT) => {
   };
 };
 
-export { returnsArray, getRandomInteger, getRandomArrayElement, returnsRandomStrings, debounce };
+export { getRandomInteger, getRandomArrayElement, debounce };
